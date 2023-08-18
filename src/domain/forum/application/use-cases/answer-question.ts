@@ -3,10 +3,14 @@ import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answer-repo'
 
 // the interface below is to clarify which argument is which when call new AnswerQuestionUseCase().exec()
-interface AnswerQuestionUseCaseArgs {
+interface AnswerQuestionUseCaseParams {
   instructorId: string
   questionId: string
   content: string
+}
+
+interface AnswerQuestionUseCaseResponse {
+  answer: Answer
 }
 
 export class AnswerQuestionUseCase {
@@ -16,7 +20,11 @@ export class AnswerQuestionUseCase {
     this.answersRepository = answersRepository
   }
 
-  async exec({ instructorId, questionId, content }: AnswerQuestionUseCaseArgs) {
+  async exec({
+    instructorId,
+    questionId,
+    content,
+  }: AnswerQuestionUseCaseParams): Promise<AnswerQuestionUseCaseResponse> {
     const answer = Answer.create({
       content,
       authorId: new UniqueEntityId(instructorId),
@@ -24,6 +32,6 @@ export class AnswerQuestionUseCase {
     })
 
     await this.answersRepository.create(answer)
-    return answer
+    return { answer }
   }
 }
