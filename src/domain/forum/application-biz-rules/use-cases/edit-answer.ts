@@ -1,4 +1,4 @@
-import { Answer } from '../../enterprise/entities/answer'
+import { Answer } from '../../enterprise-biz-rules/entities/answer'
 import { AnswersRepository } from '../repositories/answer-repo'
 
 interface EditAnswerUseCaseParams {

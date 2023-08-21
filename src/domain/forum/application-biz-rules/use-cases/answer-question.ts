@@ -1,5 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Answer } from '../../enterprise/entities/answer'
+import { Answer } from '../../enterprise-biz-rules/entities/answer'
 import { AnswersRepository } from '../repositories/answer-repo'
 
 // the interface below is to clarify which argument is which when call new AnswerQuestionUseCase().exec()

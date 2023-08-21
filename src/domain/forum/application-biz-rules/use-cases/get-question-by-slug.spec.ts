@@ -2,7 +2,7 @@ import { GetQuestionBySlugUseCase } from './get-question-by-slug'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
 import { makeQuestion } from 'test/factories/make-question'
-import { Slug } from '../../enterprise/entities/value-objects/slug'
+import { Slug } from '../../enterprise-biz-rules/entities/value-objects/slug'
 
 let questionsRepository: InMemoryQuestionsRepository
 let sut: GetQuestionBySlugUseCase // <-- System Under Test

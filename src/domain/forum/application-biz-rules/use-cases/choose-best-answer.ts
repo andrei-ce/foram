@@ -1,5 +1,5 @@
 import { AnswersRepository } from '../repositories/answer-repo'
-import { Question } from '../../enterprise/entities/question'
+import { Question } from '../../enterprise-biz-rules/entities/question'
 import { QuestionsRepository } from '../repositories/question-repo'
 
 interface ChooseBestAnswerUseCaseParams {
