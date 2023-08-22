@@ -3,6 +3,8 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
 import { makeQuestion } from 'test/factories/make-question'
 import { Slug } from '../../enterprise-biz-rules/entities/value-objects/slug'
+import { Failure, Success } from '@/core/either'
+import { ResourceNotFoundError } from './errors/resource-not-found'
 
 let questionsRepository: InMemoryQuestionsRepository
 let sut: GetQuestionBySlugUseCase // <-- System Under Test
@@ -19,14 +21,17 @@ describe('Get question by slug', () => {
     })
     await questionsRepository.create(newQuestion)
 
-    const { question } = await sut.exec({ slug: 'example-question-001' })
-    expect(question.id).toBeInstanceOf(UniqueEntityId)
-    expect(question.title).toEqual(newQuestion.title)
+    const result = await sut.exec({ slug: 'example-question-001' })
+
+    expect(result).toBeInstanceOf(Success)
+    expect(result.value?.question.id).toBeInstanceOf(UniqueEntityId)
+    expect(result.value?.question.title).toEqual(newQuestion.title)
   })
 
   it("should not be able to get a question if the slug doesn't exist", async () => {
-    await expect(() =>
-      sut.exec({ slug: 'this-slug-doesnt-exist' }),
-    ).rejects.toThrowError()
+    const result = await sut.exec({ slug: 'this-slug-doesnt-exist' })
+
+    expect(result).toBeInstanceOf(Failure)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })

@@ -1,5 +1,8 @@
+import { Either, fail, succeed } from '@/core/either'
 import { Answer } from '../../enterprise-biz-rules/entities/answer'
 import { AnswersRepository } from '../repositories/answer-repo'
+import { ResourceNotFoundError } from './errors/resource-not-found'
+import { NotAllowedError } from './errors/not-allowed'
 
 interface EditAnswerUseCaseParams {
   requesterId: string
@@ -8,9 +11,12 @@ interface EditAnswerUseCaseParams {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface EditAnswerUseCaseResponse {
-  answer: Answer
-}
+type EditAnswerUseCaseResponse = Either<
+  ResourceNotFoundError | NotAllowedError,
+  {
+    answer: Answer
+  }
+>
 
 export class EditAnswerUseCase {
   constructor(private answersRepository: AnswersRepository) {}
@@ -23,15 +29,15 @@ export class EditAnswerUseCase {
     const answer = await this.answersRepository.findById(answerId)
 
     if (!answer) {
-      throw new Error('Answer not found.')
+      return fail(new ResourceNotFoundError())
     }
     if (answer.authorId.toValue() !== requesterId) {
-      throw new Error('Unauthorized.')
+      return fail(new NotAllowedError())
     }
 
     answer.content = content
 
     this.answersRepository.save(answer)
-    return { answer }
+    return succeed({ answer })
   }
 }

@@ -22,9 +22,9 @@ describe('Get recent questions', () => {
       makeQuestion({ createdAt: new Date(2022, 0, 18) }),
     )
 
-    const { questions } = await sut.exec({ page: 1 })
+    const result = await sut.exec({ page: 1 })
 
-    expect(questions).toEqual([
+    expect(result.value?.questions).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 0, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 18) }),
@@ -36,8 +36,8 @@ describe('Get recent questions', () => {
       await questionsRepository.create(makeQuestion())
     }
 
-    const { questions } = await sut.exec({ page: 2 })
+    const result = await sut.exec({ page: 2 })
 
-    expect(questions).toHaveLength(5)
+    expect(result.value?.questions).toHaveLength(5)
   })
 })

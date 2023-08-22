@@ -1,3 +1,4 @@
+import { Success } from '@/core/either'
 import { AnswerQuestionUseCase } from './answer-question'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repo'
 
@@ -11,13 +12,13 @@ describe('Create Answer', () => {
   })
 
   it('should be able to create an answer', async () => {
-    const { answer } = await sut.exec({
+    const result = await sut.exec({
+      questionId: '1',
       instructorId: '1',
-      questionId: '10',
       content: 'New answer!',
     })
 
-    expect(answer.content).toEqual('New answer!')
-    expect(answersRepository.items[0].id).toEqual(answer.id)
+    expect(result).toBeInstanceOf(Success)
+    expect(answersRepository.items[0]).toEqual(result.value?.answer)
   })
 })

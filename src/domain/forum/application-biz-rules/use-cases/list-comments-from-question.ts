@@ -1,3 +1,4 @@
+import { Either, succeed } from '@/core/either'
 import { QuestionComment } from '../../enterprise-biz-rules/entities/question-comment'
 import { QuestionCommentsRepository } from '../repositories/question-comments-repo'
 
@@ -6,9 +7,12 @@ interface ListCommentsFromQuestionUseCaseParams {
   page: number
 }
 
-interface ListCommentsFromQuestionUseCaseResponse {
-  questionComments: QuestionComment[]
-}
+type ListCommentsFromQuestionUseCaseResponse = Either<
+  null,
+  {
+    questionComments: QuestionComment[]
+  }
+>
 
 export class ListCommentsFromQuestionUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
@@ -22,6 +26,6 @@ export class ListCommentsFromQuestionUseCase {
         page,
       })
 
-    return { questionComments }
+    return succeed({ questionComments })
   }
 }

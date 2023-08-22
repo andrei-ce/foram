@@ -5,7 +5,17 @@
   ],
   "rules": {
     "no-useless-constructor": "off",
-    "no-new": "off"
+    "no-new": "off",
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ]
+
   },
   "env": {
     "vitest-globals/env": true

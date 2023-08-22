@@ -2,6 +2,8 @@ import { EditQuestionUseCase } from './edit-question'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
+import { NotAllowedError } from './errors/not-allowed'
+import { Failure } from '@/core/either'
 
 let questionsRepository: InMemoryQuestionsRepository
 let sut: EditQuestionUseCase // <-- System Under Test
@@ -38,13 +40,14 @@ describe('Edit Question', () => {
     )
     await questionsRepository.create(newQuestion)
 
-    expect(async () => {
-      await sut.exec({
-        requesterId: 'author-002',
-        questionId: newQuestion.id.toString(),
-        title: 'Updated Title!',
-        content: "Hi! This question's content has been updated.",
-      })
-    }).rejects.toThrowError()
+    const result = await sut.exec({
+      requesterId: 'author-002',
+      questionId: newQuestion.id.toString(),
+      title: 'Updated Title!',
+      content: "Hi! This question's content has been updated.",
+    })
+
+    expect(result).toBeInstanceOf(Failure)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

@@ -2,6 +2,8 @@ import { EditAnswerUseCase } from './edit-answer'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeAnswer } from 'test/factories/make-answer'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repo'
+import { NotAllowedError } from './errors/not-allowed'
+import { Failure } from '@/core/either'
 
 let answersRepository: InMemoryAnswersRepository
 let sut: EditAnswerUseCase // <-- System Under Test
@@ -29,19 +31,20 @@ describe('Edit Answer', () => {
     })
   })
 
-  it('should not be able to edit a answer frmo another user', async () => {
+  it('should not be able to edit a answer from another user', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-001') },
       new UniqueEntityId('answer-001'),
     )
     await answersRepository.create(newAnswer)
 
-    expect(async () => {
-      await sut.exec({
-        requesterId: 'author-002',
-        answerId: newAnswer.id.toString(),
-        content: "Hi! This answer's content has been updated.",
-      })
-    }).rejects.toThrowError()
+    const result = await sut.exec({
+      requesterId: 'author-002',
+      answerId: newAnswer.id.toString(),
+      content: "Hi! This answer's content has been updated.",
+    })
+
+    expect(result).toBeInstanceOf(Failure)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

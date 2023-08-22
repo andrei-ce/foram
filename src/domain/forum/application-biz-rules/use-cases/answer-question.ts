@@ -1,6 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Answer } from '../../enterprise-biz-rules/entities/answer'
 import { AnswersRepository } from '../repositories/answer-repo'
+import { Either, succeed } from '@/core/either'
 
 // the interface below is to clarify which argument is which when call new AnswerQuestionUseCase().exec()
 interface AnswerQuestionUseCaseParams {
@@ -9,9 +10,7 @@ interface AnswerQuestionUseCaseParams {
   content: string
 }
 
-interface AnswerQuestionUseCaseResponse {
-  answer: Answer
-}
+type AnswerQuestionUseCaseResponse = Either<null, { answer: Answer }>
 
 export class AnswerQuestionUseCase {
   private answersRepository: AnswersRepository
@@ -32,6 +31,7 @@ export class AnswerQuestionUseCase {
     })
 
     await this.answersRepository.create(answer)
-    return { answer }
+
+    return succeed({ answer })
   }
 }

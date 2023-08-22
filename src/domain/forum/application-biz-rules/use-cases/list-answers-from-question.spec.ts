@@ -32,11 +32,11 @@ describe('Get answers related to one question', () => {
         questionId: newAnswerQuestionID,
       }),
     )
-    const { answers } = await sut.exec({
+    const result = await sut.exec({
       questionId: newAnswerQuestionID.toString(),
       page: 1,
     })
-    expect(answers).toEqual([
+    expect(result.value?.answers).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 0, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 18) }),
@@ -51,11 +51,11 @@ describe('Get answers related to one question', () => {
       )
     }
 
-    const { answers } = await sut.exec({
+    const result = await sut.exec({
       questionId: newAnswerQuestionID.toString(),
       page: 2,
     })
 
-    expect(answers).toHaveLength(4)
+    expect(result.value?.answers).toHaveLength(4)
   })
 })

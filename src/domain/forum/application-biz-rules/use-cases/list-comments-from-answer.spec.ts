@@ -32,11 +32,11 @@ describe('List comments from one answer', () => {
         answerId: newAnswerAnswerID,
       }),
     )
-    const { answerComments } = await sut.exec({
+    const result = await sut.exec({
       answerId: newAnswerAnswerID.toString(),
       page: 1,
     })
-    expect(answerComments).toEqual([
+    expect(result.value?.answerComments).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 0, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 0, 18) }),
@@ -51,11 +51,11 @@ describe('List comments from one answer', () => {
       )
     }
 
-    const { answerComments } = await sut.exec({
+    const result = await sut.exec({
       answerId: newAnswerAnswerID.toString(),
       page: 2,
     })
 
-    expect(answerComments).toHaveLength(4)
+    expect(result.value?.answerComments).toHaveLength(4)
   })
 })

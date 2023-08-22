@@ -2,6 +2,8 @@ import { DeleteQuestionUseCase } from './delete-question'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
+import { NotAllowedError } from './errors/not-allowed'
+import { Failure } from '@/core/either'
 
 let questionsRepository: InMemoryQuestionsRepository
 let sut: DeleteQuestionUseCase // <-- System Under Test
@@ -30,12 +32,13 @@ describe('Delete Question', () => {
     )
     await questionsRepository.create(newQuestion)
 
-    expect(async () => {
-      await sut.exec({
-        requesterId: 'author-002',
-        questionId: 'question-001',
-      })
-    }).rejects.toThrowError()
+    const result = await sut.exec({
+      requesterId: 'author-002',
+      questionId: 'question-001',
+    })
+
+    expect(result).toBeInstanceOf(Failure)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
     expect(questionsRepository.items.length).toEqual(1)
   })
 })
