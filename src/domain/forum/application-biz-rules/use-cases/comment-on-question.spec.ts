@@ -3,14 +3,20 @@ import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
 import { CommentOnQuestionUseCase } from './comment-on-question'
 import { Success } from '@/core/either'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repo'
 
 let questionsRepository: InMemoryQuestionsRepository
+let questionAttachmentssRepository: InMemoryQuestionAttachmentsRepository
+
 let questionCommentsRepository: InMemoryQuestionCommentsRepository
 let sut: CommentOnQuestionUseCase // <-- System Under Test
 
 describe('Comment on a question', () => {
   beforeEach(() => {
-    questionsRepository = new InMemoryQuestionsRepository()
+    questionAttachmentssRepository = new InMemoryQuestionAttachmentsRepository()
+    questionsRepository = new InMemoryQuestionsRepository(
+      questionAttachmentssRepository,
+    )
     questionCommentsRepository = new InMemoryQuestionCommentsRepository()
     sut = new CommentOnQuestionUseCase(
       questionsRepository,

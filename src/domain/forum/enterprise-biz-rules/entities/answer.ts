@@ -1,12 +1,14 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { AnswerAttachmentList } from './answer-attachment-list'
 
 export interface AnswerProps {
   authorId: UniqueEntityId
   questionId: UniqueEntityId
   content: string
   createdAt: Date
+  attachments: AnswerAttachmentList
   updatedAt?: Date
 }
 // the Entity<GenericProps> equals the code below, hence the below is useless :)
@@ -16,6 +18,14 @@ export interface AnswerProps {
 // }
 //
 export class Answer extends Entity<AnswerProps> {
+  get authorId() {
+    return this.props.authorId
+  }
+
+  get questionId() {
+    return this.props.questionId
+  }
+
   get content() {
     return this.props.content
   }
@@ -25,12 +35,13 @@ export class Answer extends Entity<AnswerProps> {
     this.touch()
   }
 
-  get authorId() {
-    return this.props.authorId
+  get attachments() {
+    return this.props.attachments
   }
 
-  get questionId() {
-    return this.props.questionId
+  set attachments(attachments: AnswerAttachmentList) {
+    this.props.attachments = attachments
+    this.touch()
   }
 
   get createdAt() {
@@ -50,11 +61,15 @@ export class Answer extends Entity<AnswerProps> {
   }
 
   static create(
-    props: Optional<AnswerProps, 'createdAt'>,
+    props: Optional<AnswerProps, 'createdAt' | 'attachments'>,
     id?: UniqueEntityId,
   ) {
     const answer = new Answer(
-      { ...props, createdAt: props.createdAt ?? new Date() },
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+        attachments: props.attachments ?? new AnswerAttachmentList(),
+      },
       id,
     )
     return answer

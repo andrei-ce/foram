@@ -9,9 +9,7 @@ interface GetQuestionBySlugUseCaseParams {
 
 type GetQuestionBySlugUseCaseResponse = Either<
   ResourceNotFoundError,
-  {
-    question: Question
-  }
+  { question: Question }
 >
 
 export class GetQuestionBySlugUseCase {

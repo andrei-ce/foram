@@ -1,6 +1,6 @@
 import { UniqueEntityId } from './unique-entity-id'
 
-export class Entity<Props> {
+export abstract class Entity<Props> {
   // don't want to change this id (hence private & no setters)
   private _id: UniqueEntityId
   // protected allows parent and extended classes to access this variable

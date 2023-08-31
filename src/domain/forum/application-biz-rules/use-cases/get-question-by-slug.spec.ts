@@ -1,17 +1,21 @@
 import { GetQuestionBySlugUseCase } from './get-question-by-slug'
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
 import { makeQuestion } from 'test/factories/make-question'
-import { Slug } from '../../enterprise-biz-rules/entities/value-objects/slug'
+import { Slug } from '../../enterprise-biz-rules/value-objects/slug'
 import { Failure, Success } from '@/core/either'
 import { ResourceNotFoundError } from './errors/resource-not-found'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repo'
 
 let questionsRepository: InMemoryQuestionsRepository
+let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: GetQuestionBySlugUseCase // <-- System Under Test
 
 describe('Get question by slug', () => {
   beforeEach(async () => {
-    questionsRepository = new InMemoryQuestionsRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
+    questionsRepository = new InMemoryQuestionsRepository(
+      questionAttachmentsRepository,
+    )
     sut = new GetQuestionBySlugUseCase(questionsRepository)
   })
 
@@ -24,8 +28,11 @@ describe('Get question by slug', () => {
     const result = await sut.exec({ slug: 'example-question-001' })
 
     expect(result).toBeInstanceOf(Success)
-    expect(result.value?.question.id).toBeInstanceOf(UniqueEntityId)
-    expect(result.value?.question.title).toEqual(newQuestion.title)
+    expect(result.value).toMatchObject({
+      question: expect.objectContaining({
+        title: newQuestion.title,
+      }),
+    })
   })
 
   it("should not be able to get a question if the slug doesn't exist", async () => {

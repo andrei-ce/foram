@@ -2,13 +2,18 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { ListAnswersFromQuestionUseCase } from './list-answers-from-question'
 import { makeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repo'
 
 let answersRepository: InMemoryAnswersRepository
+let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let sut: ListAnswersFromQuestionUseCase // <-- System Under Test
 
 describe('Get answers related to one question', () => {
   beforeEach(async () => {
-    answersRepository = new InMemoryAnswersRepository()
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    answersRepository = new InMemoryAnswersRepository(
+      answerAttachmentsRepository,
+    )
     sut = new ListAnswersFromQuestionUseCase(answersRepository)
   })
 
