@@ -1,7 +1,7 @@
 import { Either, fail, succeed } from '@/core/either'
 import { Question } from '../../enterprise-biz-rules/entities/question'
 import { QuestionsRepository } from '../repositories/question-repo'
-import { ResourceNotFoundError } from './errors/resource-not-found'
+import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found'
 
 interface GetQuestionBySlugUseCaseParams {
   slug: string

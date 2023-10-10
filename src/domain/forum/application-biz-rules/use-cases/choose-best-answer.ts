@@ -2,8 +2,8 @@ import { AnswersRepository } from '../repositories/answer-repo'
 import { Question } from '../../enterprise-biz-rules/entities/question'
 import { QuestionsRepository } from '../repositories/question-repo'
 import { Either, fail, succeed } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found'
-import { NotAllowedError } from './errors/not-allowed'
+import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found'
+import { NotAllowedError } from '../../../../core/errors/errors/not-allowed'
 
 interface ChooseBestAnswerUseCaseParams {
   requesterId: string

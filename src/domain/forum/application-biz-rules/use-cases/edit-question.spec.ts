@@ -3,7 +3,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repo'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repo'
-import { NotAllowedError } from './errors/not-allowed'
+import { NotAllowedError } from '../../../../core/errors/errors/not-allowed'
 import { Failure } from '@/core/either'
 import { makeQuestionAttachment } from 'test/factories/make-question-attachment'
 

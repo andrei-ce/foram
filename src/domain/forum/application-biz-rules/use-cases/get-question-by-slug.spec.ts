@@ -3,7 +3,7 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { makeQuestion } from 'test/factories/make-question'
 import { Slug } from '../../enterprise-biz-rules/value-objects/slug'
 import { Failure, Success } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found'
+import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repo'
 
 let questionsRepository: InMemoryQuestionsRepository

@@ -1,7 +1,7 @@
 import { QuestionsRepository } from '../repositories/question-repo'
-import { NotAllowedError } from './errors/not-allowed'
+import { NotAllowedError } from '../../../../core/errors/errors/not-allowed'
 import { Either, fail, succeed } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found'
+import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found'
 
 interface DeleteQuestionUseCaseParams {
   requesterId: string
