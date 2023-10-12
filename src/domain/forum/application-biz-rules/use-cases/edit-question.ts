@@ -41,7 +41,7 @@ export class EditQuestionUseCase {
     if (!question) {
       return fail(new ResourceNotFoundError())
     }
-    if (question.authorId.toValue() !== requesterId) {
+    if (question.authorId.toString() !== requesterId) {
       return fail(new NotAllowedError())
     }
 

@@ -40,7 +40,7 @@ export class EditAnswerUseCase {
     if (!answer) {
       return fail(new ResourceNotFoundError())
     }
-    if (answer.authorId.toValue() !== requesterId) {
+    if (answer.authorId.toString() !== requesterId) {
       return fail(new NotAllowedError())
     }
 
