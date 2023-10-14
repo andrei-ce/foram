@@ -5,6 +5,8 @@ import { DomainEvent } from './domain-event'
 
 type DomainEventCallback = (event: any) => void
 
+// an Aggregate in this file is an event before it's been fired
+
 export class DomainEvents {
   // subscribers: obj listening to 1 event (string), executing 1 callBack
   private static handlersMap: Record<string, DomainEventCallback[]> = {}
