@@ -21,7 +21,7 @@ export class OnAnswerCreated implements EventHandler {
   }
 
   // IMPORTANT: use arrow function to preserve this as OnAnswerCreated, and not DomainEvents.
-  // Option 2 would be to have this.sendNewAnswerNotification.bind(this)
+  // Option 2 would be to have this.sendNewAnswerNotification.bind(this) on setupSubscriptions
   private sendNewAnswerNotification = async ({
     answer,
     ...event

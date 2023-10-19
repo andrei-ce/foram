@@ -2,7 +2,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { DomainEvent } from '@/core/events/domain-event'
 import { Question } from '../entities/question'
 
-export class BestAnswerChosen implements DomainEvent {
+export class BestAnswerChosenEvent implements DomainEvent {
   public ocurredAt: Date
   public question: Question
   public bestAnswerId: UniqueEntityId
@@ -14,6 +14,6 @@ export class BestAnswerChosen implements DomainEvent {
   }
 
   getAggregateId(): UniqueEntityId {
-    return this.bestAnswerId
+    return this.question.id
   }
 }
